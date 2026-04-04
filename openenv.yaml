@@ -1,0 +1,26 @@
+name: email-triage-env
+version: 0.1.0
+tasks:
+  - task_easy
+  - task_medium
+  - task_hard
+observation_space:
+  email_id: str
+  subject: str
+  body: str
+  sender: str
+  timestamp: str
+  thread_history: list[str]
+  task_id: str
+  step_number: int
+  total_emails: int
+action_space:
+  label: literal[urgent, normal, spam, archive]
+  summary: str
+  route_to: str
+entrypoint: environment:EmailTriageEnv
+tags:
+  - openenv
+  - real-world
+  - nlp
+  - email-triage
