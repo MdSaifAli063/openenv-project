@@ -16,7 +16,7 @@ MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-7B-Instruct")
 HF_TOKEN = os.getenv("HF_TOKEN")
 API_KEY = HF_TOKEN or os.getenv("API_KEY")
 
-# Optional if you use from_docker_image().
+
 LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
 
 MAX_STEPS = 10
