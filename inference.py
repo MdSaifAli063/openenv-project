@@ -11,9 +11,13 @@ from openai import OpenAI
 from environment import EmailTriageEnv
 from models import EmailObservation, TriageAction
 
-API_BASE_URL = os.getenv("API_BASE_URL")
-API_KEY = os.getenv("HF_TOKEN") or os.getenv("API_KEY")
-MODEL_NAME = os.getenv("MODEL_NAME")
+API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
+MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-7B-Instruct")
+HF_TOKEN = os.getenv("HF_TOKEN")
+API_KEY = HF_TOKEN or os.getenv("API_KEY")
+
+# Optional if you use from_docker_image().
+LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
 
 MAX_STEPS = 10
 TEMPERATURE = 0.2
@@ -60,13 +64,13 @@ def validate_runtime_config(model_name: str | None) -> str:
     Raises:
         ValueError: If required runtime settings are missing.
     """
-    if not API_BASE_URL:
+    if not API_BASE_URL or API_BASE_URL == "your-active-url":
         raise ValueError("Missing API_BASE_URL environment variable.")
     if not API_KEY:
         raise ValueError("Missing HF_TOKEN or API_KEY environment variable.")
 
     effective_model = model_name or MODEL_NAME
-    if not effective_model:
+    if not effective_model or effective_model == "your-active-model":
         raise ValueError("Missing MODEL_NAME environment variable or --model override.")
     return effective_model
 
