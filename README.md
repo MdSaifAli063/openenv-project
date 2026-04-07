@@ -24,7 +24,7 @@ from OpenEnv_Project import OpenenvProjectAction, OpenenvProjectEnv
 
 try:
     # Create environment from Docker image
-    OpenEnv_Projectenv = OpenenvProjectEnv.from_docker_image("OpenEnv_Project-env:latest")
+    OpenEnv_Projectenv = OpenenvProjectEnv.from_docker_image("openenv_project-env:latest")
 
     # Reset
     result = OpenEnv_Projectenv.reset()
@@ -57,7 +57,7 @@ Before using the environment, you need to build the Docker image:
 
 ```bash
 # From project root
-docker build -t OpenEnv_Project-env:latest -f server/Dockerfile .
+docker build -t openenv_project-env:latest -f Dockerfile .
 ```
 
 ## Deploying to Hugging Face Spaces
