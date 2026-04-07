@@ -3,10 +3,19 @@
 import argparse
 import json
 import os
+from pathlib import Path
 import re
+import sys
 from typing import Any
 
 from openai import OpenAI
+
+ROOT_DIR = Path(__file__).resolve().parent
+SERVER_DIR = ROOT_DIR / "server"
+
+for import_path in (str(SERVER_DIR), str(ROOT_DIR)):
+    if import_path not in sys.path:
+        sys.path.insert(0, import_path)
 
 from environment import EmailTriageEnv
 from models import EmailObservation, TriageAction
