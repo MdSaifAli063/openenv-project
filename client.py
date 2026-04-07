@@ -36,7 +36,7 @@ class OpenenvProjectEnv(
 
     Example with Docker:
         >>> # Automatically start container and connect
-        >>> client = OpenenvProjectEnv.from_docker_image("OpenEnv_Project-env:latest")
+        >>> client = OpenenvProjectEnv.from_docker_image("openenv_project-env:latest")
         >>> try:
         ...     result = client.reset()
         ...     result = client.step(OpenenvProjectAction(message="Test"))
