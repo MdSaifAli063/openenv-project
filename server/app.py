@@ -545,6 +545,7 @@ current_env = EmailTriageEnv(task_id="task_easy")
 
 
 @app.get("/")
+@app.get("/web")
 def root_page():
     """Render a lightweight frontend for interacting with the environment."""
     return Response(FRONTEND_HTML, mimetype="text/html")
@@ -564,6 +565,12 @@ def root_endpoint():
             },
         }
     )
+
+
+@app.get("/health")
+def health_endpoint():
+    """Return a simple health response for container checks."""
+    return jsonify({"status": "ok"})
 
 
 @app.post("/reset")
