@@ -1,4 +1,5 @@
 ---
+<<<<<<< HEAD
 title: Openenv Project Environment Server
 emoji: 🗜️
 colorFrom: indigo
@@ -253,3 +254,15 @@ openenv_project/
     ├── app.py             # FastAPI application (HTTP + WebSocket endpoints)
     └── Dockerfile         # Container image definition
 ```
+=======
+title: Openenv Email Triage
+emoji: 🌖
+colorFrom: gray
+colorTo: indigo
+sdk: docker
+pinned: false
+license: mit
+---
+
+Check out the configuration reference at https://huggingface.co/docs/hub/spaces-config-reference
+>>>>>>> 999de0fdbd10e07b72c676b12e4392b245050fb1
