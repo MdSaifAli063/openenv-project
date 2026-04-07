@@ -1,19 +1,38 @@
 """Core OpenEnv email triage environment implementation."""
 
+from pathlib import Path
+import sys
 from typing import cast
 
 from pydantic import ValidationError
 
-from .graders import grade_easy, grade_hard, grade_medium
-from ..models import (
-    EmailObservation,
-    EnvironmentState,
-    ResetResult,
-    RewardResult,
-    StepResult,
-    TriageAction,
-)
-from .tasks import get_task_definition
+try:
+    from .graders import grade_easy, grade_hard, grade_medium
+    from ..models import (
+        EmailObservation,
+        EnvironmentState,
+        ResetResult,
+        RewardResult,
+        StepResult,
+        TriageAction,
+    )
+    from .tasks import get_task_definition
+except ImportError:
+    SERVER_DIR = Path(__file__).resolve().parent
+    PROJECT_DIR = SERVER_DIR.parent
+    for import_path in (str(SERVER_DIR), str(PROJECT_DIR)):
+        if import_path not in sys.path:
+            sys.path.insert(0, import_path)
+    from graders import grade_easy, grade_hard, grade_medium
+    from models import (
+        EmailObservation,
+        EnvironmentState,
+        ResetResult,
+        RewardResult,
+        StepResult,
+        TriageAction,
+    )
+    from tasks import get_task_definition
 
 
 class EmailTriageEnv:

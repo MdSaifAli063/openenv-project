@@ -18,7 +18,7 @@ action_space:
   label: literal[urgent, normal, spam, archive]
   summary: str
   route_to: str
-entrypoint: environment:EmailTriageEnv
+entrypoint: server.environment:EmailTriageEnv
 tags:
   - openenv
   - real-world

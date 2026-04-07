@@ -1,8 +1,19 @@
 """Auxiliary server entrypoint required by OpenEnv local validation checks."""
 
+from pathlib import Path
+import sys
+
 from flask import Flask, Response, jsonify, request
 
-from .environment import EmailTriageEnv
+try:
+    from .environment import EmailTriageEnv
+except ImportError:
+    SERVER_DIR = Path(__file__).resolve().parent
+    PROJECT_DIR = SERVER_DIR.parent
+    for import_path in (str(SERVER_DIR), str(PROJECT_DIR)):
+        if import_path not in sys.path:
+            sys.path.insert(0, import_path)
+    from environment import EmailTriageEnv
 
 FRONTEND_HTML = """<!doctype html>
 <html lang="en">
