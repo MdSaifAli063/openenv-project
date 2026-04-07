@@ -20,21 +20,21 @@ A simple test environment that echoes back messages. Perfect for testing the env
 The simplest way to use the Openenv Project environment is through the `OpenenvProjectEnv` class:
 
 ```python
-from OpenEnv_Project import OpenenvProjectAction, OpenenvProjectEnv
+from openenv_project import OpenenvProjectAction, OpenenvProjectEnv
 
 try:
     # Create environment from Docker image
-    OpenEnv_Projectenv = OpenenvProjectEnv.from_docker_image("openenv_project-env:latest")
+    openenv_project_env = OpenenvProjectEnv.from_docker_image("openenv_project-env:latest")
 
     # Reset
-    result = OpenEnv_Projectenv.reset()
+    result = openenv_project_env.reset()
     print(f"Reset: {result.observation.echoed_message}")
 
     # Send multiple messages
     messages = ["Hello, World!", "Testing echo", "Final message"]
 
     for msg in messages:
-        result = OpenEnv_Projectenv.step(OpenenvProjectAction(message=msg))
+        result = openenv_project_env.step(OpenenvProjectAction(message=msg))
         print(f"Sent: '{msg}'")
         print(f"  → Echoed: '{result.observation.echoed_message}'")
         print(f"  → Length: {result.observation.message_length}")
@@ -42,7 +42,7 @@ try:
 
 finally:
     # Always clean up
-    OpenEnv_Projectenv.close()
+    openenv_project_env.close()
 ```
 
 That's it! The `OpenenvProjectEnv.from_docker_image()` method handles:
@@ -143,24 +143,24 @@ The reward is calculated as: `message_length × 0.1`
 If you already have a Openenv Project environment server running, you can connect directly:
 
 ```python
-from OpenEnv_Project import OpenenvProjectEnv
+from openenv_project import OpenenvProjectEnv
 
 # Connect to existing server
-OpenEnv_Projectenv = OpenenvProjectEnv(base_url="<ENV_HTTP_URL_HERE>")
+openenv_project_env = OpenenvProjectEnv(base_url="<ENV_HTTP_URL_HERE>")
 
 # Use as normal
-result = OpenEnv_Projectenv.reset()
-result = OpenEnv_Projectenv.step(OpenenvProjectAction(message="Hello!"))
+result = openenv_project_env.reset()
+result = openenv_project_env.step(OpenenvProjectAction(message="Hello!"))
 ```
 
-Note: When connecting to an existing server, `OpenEnv_Projectenv.close()` will NOT stop the server.
+Note: When connecting to an existing server, `openenv_project_env.close()` will NOT stop the server.
 
 ### Using the Context Manager
 
 The client supports context manager usage for automatic connection management:
 
 ```python
-from OpenEnv_Project import OpenenvProjectAction, OpenenvProjectEnv
+from openenv_project import OpenenvProjectAction, OpenenvProjectEnv
 
 # Connect with context manager (auto-connects and closes)
 with OpenenvProjectEnv(base_url="http://localhost:8000") as env:
@@ -195,7 +195,7 @@ app = create_app(
 Then multiple clients can connect simultaneously:
 
 ```python
-from OpenEnv_Project import OpenenvProjectAction, OpenenvProjectEnv
+from openenv_project import OpenenvProjectAction, OpenenvProjectEnv
 from concurrent.futures import ThreadPoolExecutor
 
 def run_episode(client_id: int):
@@ -218,7 +218,7 @@ Test the environment logic directly without starting the HTTP server:
 
 ```bash
 # From the server directory
-python3 server/OpenEnv_Project_environment.py
+python3 server/openenv_project_environment.py
 ```
 
 This verifies that:
@@ -238,7 +238,7 @@ uvicorn server.app:app --reload
 ## Project Structure
 
 ```
-OpenEnv_Project/
+openenv_project/
 ├── .dockerignore         # Docker build exclusions
 ├── __init__.py            # Module exports
 ├── README.md              # This file
@@ -249,7 +249,7 @@ OpenEnv_Project/
 ├── models.py              # Action and Observation models
 └── server/
     ├── __init__.py        # Server module exports
-    ├── OpenEnv_Project_environment.py  # Core environment logic
+    ├── openenv_project_environment.py  # Core environment logic
     ├── app.py             # FastAPI application (HTTP + WebSocket endpoints)
     └── Dockerfile         # Container image definition
 ```
