@@ -12,6 +12,23 @@ from openai import OpenAI
 
 ROOT_DIR = Path(__file__).resolve().parent
 SERVER_DIR = ROOT_DIR / "server"
+ENV_FILE = ROOT_DIR / ".env"
+
+
+def load_env_file(env_path: Path) -> None:
+    """Load simple KEY=VALUE pairs from a local .env file if present."""
+    if not env_path.exists():
+        return
+
+    for raw_line in env_path.read_text(encoding="utf-8").splitlines():
+        line = raw_line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        key, value = line.split("=", 1)
+        os.environ.setdefault(key.strip(), value.strip().strip("\"'"))
+
+
+load_env_file(ENV_FILE)
 
 for import_path in (str(SERVER_DIR), str(ROOT_DIR)):
     if import_path not in sys.path:
@@ -23,7 +40,6 @@ from models import EmailObservation, TriageAction
 API_BASE_URL = os.getenv("API_BASE_URL", "https://router.huggingface.co/v1")
 MODEL_NAME = os.getenv("MODEL_NAME", "Qwen/Qwen2.5-7B-Instruct")
 HF_TOKEN = os.getenv("HF_TOKEN")
-API_KEY = HF_TOKEN or os.getenv("API_KEY")
 
 
 LOCAL_IMAGE_NAME = os.getenv("LOCAL_IMAGE_NAME")
@@ -75,8 +91,8 @@ def validate_runtime_config(model_name: str | None) -> str:
     """
     if not API_BASE_URL or API_BASE_URL == "your-active-url":
         raise ValueError("Missing API_BASE_URL environment variable.")
-    if not API_KEY:
-        raise ValueError("Missing HF_TOKEN or API_KEY environment variable.")
+    if not HF_TOKEN:
+        raise ValueError("Missing HF_TOKEN environment variable.")
 
     effective_model = model_name or MODEL_NAME
     if not effective_model or effective_model == "your-active-model":
@@ -288,7 +304,7 @@ def main() -> None:
 
     client = OpenAI(
         base_url=API_BASE_URL,
-        api_key=API_KEY,
+        api_key=HF_TOKEN,
     )
 
     task_ids = [TASK_MAP[args.task]] if args.task in TASK_MAP else list(TASK_MAP.values())
